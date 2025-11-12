@@ -1,14 +1,15 @@
         
         header img {
-    max-width: 10%;
-    height: auto;
-    border-radius: 15px;
-  }
+        max-width: 10%;
+        height: auto;
+        border-radius: 10px;
+        }
         .chess-icon {
             display: block;
             margin: 0 auto 10px auto;
             width: 80px;
         }
+        
         body{
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
@@ -26,7 +27,7 @@
             z-index: -1;
         }
         header {
-            background-color: #0b3d91;
+            background: linear-gradient(90deg, #0056b3, #0099ff);
             color: white;
             text-align: center;
             padding: 40px 20px;
@@ -39,6 +40,17 @@
             margin: 10px 0 0;
             font-size: 1.2em;
             font-style: italic;
+        }
+        header h2{
+            font-size: 20px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 2px solid #14151a; /* Blue border */
+            padding: 8px 15px;          /* Top/bottom 8px, left/right 15px */
+            display: inline-block;
+            border-radius: 5px;         /* Rounded corners (optional) */
+            font-weight: bold;
+        
         }
         section {
             padding: 40px 20px;
@@ -73,5 +85,4 @@
         }
         a:hover {
             text-decoration: underline;
-
         }
