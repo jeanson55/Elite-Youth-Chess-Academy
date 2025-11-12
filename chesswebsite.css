@@ -2,7 +2,7 @@
         header img {
     max-width: 10%;
     height: auto;
-    border-radius: 10px;
+    border-radius: 15px;
   }
         .chess-icon {
             display: block;
@@ -73,4 +73,5 @@
         }
         a:hover {
             text-decoration: underline;
+
         }
