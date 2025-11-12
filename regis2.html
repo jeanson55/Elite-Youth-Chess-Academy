@@ -106,77 +106,90 @@
         <p><strong>Walk-in Session:</strong> ₵30</p>
   </div>
 
-<form id="registrationForm">
-  <label for="name">Child’s Full Name:</label>
-  <input type="text" id="name" name="name" required>
+ <form id="registrationForm">
+    <label for="childName">Child’s Full Name:</label>
+    <input type="text" id="childName" name="childName" required>
 
-  <label for="age">Age:</label>
-  <input type="number" id="age" name="age" required>
+    <label for="age">Age:</label>
+    <input type="number" id="age" name="age" required>
 
-  <label for="parentname">Parent’s Name:</label>
-  <input type="text" id="name" name="name" required>
+    <label for="parentName">Parent’s Name:</label>
+    <input type="text" id="parentName" name="parentName" required>
 
-  <label for="parentEmail">Parent’s Email:</label>
-  <input type="email" id="parentEmail" name="parentEmail" required>
+    <label for="parentEmail">Parent’s Email:</label>
+    <input type="email" id="parentEmail" name="parentEmail" required>
 
-  <label for="phone">Parent’s Phone Number:</label>
-  <input type="tel" id="phone" name="phone" required>
-  <label>Preferred Session:</label>
-    <select name="Session" required>
+    <label for="phone">Parent’s Phone Number:</label>
+    <input type="tel" id="phone" name="phone" required>
+
+    <label for="preferredSession">Preferred Session:</label>
+    <select id="preferredSession" name="preferredSession" required>
       <option value="">-- Select Session --</option>
-      <option value="Saturday">Saturday (10:00am – 12:00pm)</option>
-      <option value="Sunday">Sunday (1:00pm – 3:00pm)</option>
+      <option value="Saturday (10:00am – 12:00pm)">Saturday (10:00am – 12:00pm)</option>
+      <option value="Sunday (1:00pm – 3:00pm)">Sunday (1:00pm – 3:00pm)</option>
     </select>
 
-    <label>Previous Chess Experience:</label>
-    <select name="Experience" required>
+    <label for="experience">Previous Chess Experience:</label>
+    <select id="experience" name="experience" required>
       <option value="">-- Select Experience Level --</option>
       <option value="Beginner">Beginner</option>
       <option value="Some Experience">Some Experience</option>
       <option value="Regular Player">Regular Player</option>
     </select>
 
-    <label>Additional Notes (Optional):</label>
-    <textarea name="Notes" placeholder="Allergies, medical info, etc."></textarea>
+    <label for="notes">Additional Notes (Optional):</label>
+    <textarea id="notes" name="notes" placeholder="Allergies, medical info, etc."></textarea>
 
+    <button type="submit">Register Now</button>
+  </form>
 
-  <button type="submit">Register Now</button>
-</form>
+  <p class="success" id="successMessage" style="display:none;">
+    ✅ Registration submitted successfully!
+  </p>
 
-<p class="success" id="successMessage" style="display:none;">
-  Registration submitted successfully!
-</p>
+  <script>
+  const form = document.getElementById('registrationForm');
 
-<script>
-const form = document.getElementById('registrationForm');
-form.addEventListener('submit', e => {
-  e.preventDefault();
+  form.addEventListener('submit', e => {
+    e.preventDefault();
 
-  // collect data from form
-  const data = new FormData(form);
+    // Collect data
+    const data = {
+      childName: form.childName.value,
+      age: form.age.value,
+      parentName: form.parentName.value,
+      parentEmail: form.parentEmail.value,
+      phone: form.phone.value,
+      preferredSession: form.preferredSession.value,
+      experience: form.experience.value,
+      notes: form.notes.value
+    };
 
-  // show submitting alert
-  alert("Submitting form...");
+    // Google Apps Script URL
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyIOMVlqNvO0fdzeSQH2bcXyn9lIyWzTeBQzImzh0BiodTXwjcV5yyx86__NZxLmwE-/exec';
 
-  // Google Apps Script Web App URL
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbxc1a5JfOWOzpGkgV5tujd3gg7eWSItW-o-iaJNldvBiru0fYhukmvFfLeXCtdoaoxe/exec';
+    // Notify user
+    alert("Submitting form...");
 
-  fetch(scriptURL, {
-    method: 'POST',
-    body: data,
-    mode: 'no-cors' // prevents CORS errors
-  })
-  .then(() => {
-    // show success message
-    document.getElementById('successMessage').style.display = 'block';
-    form.reset();
-  })
-  .catch(error => {
-    alert('❌ Error submitting form: ' + error.message);
+    fetch(scriptURL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(result => {
+      if (result.status === 'success') {
+        document.getElementById('successMessage').style.display = 'block';
+        form.reset();
+      } else {
+        alert("⚠️ Submission failed: " + result.message);
+      }
+    })
+    .catch(error => {
+      alert('❌ Network error: ' + error.message);
+    });
   });
-});
-</script>
-
+  </script>
 
 </body>
 </html>
