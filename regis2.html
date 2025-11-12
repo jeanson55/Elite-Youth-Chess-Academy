@@ -150,39 +150,48 @@
   <script>
 const form = document.getElementById('registrationForm');
 
-form.addEventListener('submit', e => {
+form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
+  // Collect all form values (include every field you need)
   const data = {
-    name: form.name.value,
-    age: form.age.value,
-    parentEmail: form.parentEmail.value,
-    phone: form.phone.value
+    name: form.name.value.trim(),
+    age: form.age.value.trim(),
+    parentname: form.parentname?.value?.trim() || '', // add if exists
+    parentEmail: form.parentEmail.value.trim(),
+    phone: form.phone.value.trim(),
+    Session: form.Session?.value || '',
+    Experience: form.Experience?.value || '',
+    Notes: form.Notes?.value?.trim() || ''
   };
 
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbxM_k6yjtsOmzRwqL9luv6n_dQ7ztLr2a6A8QKH1cW4PVcLxS-xJagU5wgBwHpkvGiL/exec';
-
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbw-Egbn6F6-msyfy4FH_ashnFwIRxVIvehKrzFywmPctzOP96GXVcEEG-VpzJLLlIw/exec';
   alert("Submitting form...");
 
-  fetch(scriptURL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  })
-  .then(res => res.json())
-  .then(result => {
+  try {
+    const response = await fetch(scriptURL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    if (!response.ok) throw new Error(`Server error: ${response.status}`);
+
+    const result = await response.json();
+
     if (result.status === 'success') {
       alert("✅ Registration successful!");
       form.reset();
     } else {
       alert("⚠️ Submission failed: " + result.message);
     }
-  })
-  .catch(error => {
-    alert('❌ Network error: ' + error.message);
-  });
+  } catch (error) {
+    alert('❌ Network error: ' + error.message + 
+      '\n\nTip: Ensure your Google Apps Script is deployed as "Anyone" and includes CORS headers.');
+  }
 });
 </script>
+
 
 
 </body>
