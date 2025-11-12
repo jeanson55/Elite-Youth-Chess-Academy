@@ -148,48 +148,42 @@
   </p>
 
   <script>
-  const form = document.getElementById('registrationForm');
+const form = document.getElementById('registrationForm');
 
-  form.addEventListener('submit', e => {
-    e.preventDefault();
+form.addEventListener('submit', e => {
+  e.preventDefault();
 
-    // Collect data
-    const data = {
-      childName: form.childName.value,
-      age: form.age.value,
-      parentName: form.parentName.value,
-      parentEmail: form.parentEmail.value,
-      phone: form.phone.value,
-      preferredSession: form.preferredSession.value,
-      experience: form.experience.value,
-      notes: form.notes.value
-    };
+  const data = {
+    name: form.name.value,
+    age: form.age.value,
+    parentEmail: form.parentEmail.value,
+    phone: form.phone.value
+  };
 
-    // Google Apps Script URL
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyIOMVlqNvO0fdzeSQH2bcXyn9lIyWzTeBQzImzh0BiodTXwjcV5yyx86__NZxLmwE-/exec';
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbxM_k6yjtsOmzRwqL9luv6n_dQ7ztLr2a6A8QKH1cW4PVcLxS-xJagU5wgBwHpkvGiL/exec';
 
-    // Notify user
-    alert("Submitting form...");
+  alert("Submitting form...");
 
-    fetch(scriptURL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    })
-    .then(res => res.json())
-    .then(result => {
-      if (result.status === 'success') {
-        document.getElementById('successMessage').style.display = 'block';
-        form.reset();
-      } else {
-        alert("⚠️ Submission failed: " + result.message);
-      }
-    })
-    .catch(error => {
-      alert('❌ Network error: ' + error.message);
-    });
+  fetch(scriptURL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  })
+  .then(res => res.json())
+  .then(result => {
+    if (result.status === 'success') {
+      alert("✅ Registration successful!");
+      form.reset();
+    } else {
+      alert("⚠️ Submission failed: " + result.message);
+    }
+  })
+  .catch(error => {
+    alert('❌ Network error: ' + error.message);
   });
-  </script>
+});
+</script>
+
 
 </body>
 </html>
