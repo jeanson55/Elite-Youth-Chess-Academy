@@ -147,81 +147,30 @@
     ✅ Registration submitted successfully!
   </p>
 
- <script>
-const form = document.getElementById('registrationForm');
-
-form.addEventListener('submit', e => {
-  e.preventDefault();
-
-  const data = {
-    name: form.name.value,
-    age: form.age.value,
-    parentEmail: form.parentEmail.value,
-    phone: form.phone.value
-  };
-
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbyMCDVsL-kEmGc_eO882YqJ6N2uHCcan_2-qXhmLRxENRHn4ut_DcllpxpVenmYrqDz/exec';
-
-  alert("Submitting form...");
-
-  fetch(scriptURL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  })
-  .then(res => res.json())
-  .then(result => {
-    if (result.status === 'success') {
-      alert("✅ Registration successful!");
-      form.reset();
-    } else {
-      alert("⚠️ Submission failed: " + result.message);
-    }
-  })
-  .catch(error => {
-    alert('❌ Network error: ' + error.message);
-  });
-});
-</script>
 <script>
 const form = document.getElementById('registrationForm');
 
-form.addEventListener('submit', e => {
+form.addEventListener('submit', async e => {
   e.preventDefault();
-
-  const data = {
-    name: form.name.value,
-    age: form.age.value,
-    parentEmail: form.parentEmail.value,
-    phone: form.phone.value
-  };
-
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbz5uWqs6Q-OEiXtcgv9y7QsBJiblqxU-bg8dG5ZdahYoKFjN-3I_54KEpa9Qz4q0aA1/exec';
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbzg7mN6Rg7BbKOx76EJyWYNghP9bY8aYA2IzO9_fMPDi60UD6qaKd4jO7OeS-S9BJD5Gg/exec';
+  const formData = new FormData(form);
 
   alert("Submitting form...");
 
-  fetch(scriptURL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  })
-  .then(res => res.json())
-  .then(result => {
-    if (result.status === 'success') {
-      alert("✅ Registration successful!");
+  try {
+    const res = await fetch(scriptURL, { method: 'POST', body: formData });
+    const text = await res.text();
+    if (text.includes('success')) {
+      document.getElementById('successMessage').style.display = 'block';
       form.reset();
     } else {
-      alert("⚠️ Submission failed: " + result.message);
+      alert('⚠️ Submission failed: ' + text);
     }
-  })
-  .catch(error => {
-    alert('❌ Network error: ' + error.message);
-  });
+  } catch (err) {
+    alert('❌ Network error: ' + err.message);
+  }
 });
 </script>
-
-
-
 
 </body>
 </html>
